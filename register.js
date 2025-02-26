@@ -85,6 +85,30 @@ app.get('/user-list', async (req, res)=>{
 });
 
 
+app.get('/user/:id', async (req, res)=>{
+    const id= req.params.id;
+
+    try {
+
+        const [rows] = await promisedb.query('SELECT * FROM userss WHERE id = ?', [id]);
+
+        if (rows.length > 0){
+            return res.status(200).json(rows)
+        }
+            
+
+        return res.status(404).json({message:'User not found'});
+        
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Server error' });
+        
+    }
+
+   
+})
+
+
 
 app.listen(3000,()=>{
     console.log("App is listening to port 3000")
